@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroWeather 🌍🌦️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>EuroWeather 🌍</h1>
+        <span>⚡ 7Timer API</span>
+    </header>
+
+    <!-- Image Banner with Animated GIF -->
+    <section class="banner">
+        <div class="banner-content">
+            <img src="https://media.giphy.com/media/3o7TKSjRrfIPjeiDhK/giphy.gif" alt="Animated Weather GIF" class="animated-gif">
+            <h2>European Weather Radar 🌦️</h2>
+            <p>Live 7-day outlooks for major European destinations instantly.</p>
+        </div>
+    </section>
+
+    <!-- Main App Container -->
+    <div class="container">
+        
+        <!-- Controls / Selectors -->
+        <div class="controls">
+            <div class="control-group">
+                <label for="citySelect">Select European City 📍</label>
+                <select id="citySelect">
+                    <option value="london" data-lon="-0.1278" data-lat="51.5074">🇬🇧 London</option>
+                    <option value="paris" data-lon="2.3522" data-lat="48.8566">🇫🇷 Paris</option>
+                    <option value="berlin" data-lon="13.4050" data-lat="52.5200">🇩🇪 Berlin</option>
+                    <option value="rome" data-lon="12.4964" data-lat="41.9028">🇮🇹 Rome</option>
+                    <option value="madrid" data-lon="-3.7038" data-lat="40.4168">🇪🇸 Madrid</option>
+                    <option value="amsterdam" data-lon="4.9041" data-lat="52.3676">🇳🇱 Amsterdam</option>
+                </select>
+            </div>
+            <button class="unit-toggle" id="unitToggleBtn">Switch to °F 🌡️</button>
+        </div>
+
+        <!-- Weather Forecast Output -->
+        <div id="weatherOutput">
+            <div class="loader">Loading weather data... ⏳</div>
+        </div>
+
+        <!-- Email Newsletter -->
+        <div class="newsletter">
+            <h3>Get Weekly Reports ✉️</h3>
+            <p>Subscribe to receive severe weather alerts straight to your inbox.</p>
+            <form onsubmit="event.preventDefault(); alert('Thank you for subscribing! 🎉');">
+                <input type="email" placeholder="Enter your email address..." required>
+                <button type="submit">Subscribe Now 🚀</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Powered by 7Timer! Public API & Built with iPhone 📱</p>
+        <p>&copy; 2026 EuroWeather. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript File Link -->
+    <script src="script.js"></script>
+</body>
+</html>
+

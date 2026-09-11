@@ -1,0 +1,215 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-color: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+header {
+    background: var(--card-bg);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.banner {
+    position: relative;
+    background: #0f172a;
+    color: white;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+}
+
+.banner h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.banner p {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.animated-gif {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+    border: 2px solid white;
+}
+
+.container {
+    max-width: 800px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+.controls {
+    background: var(--card-bg);
+    padding: 1.25rem;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.control-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    color: var(--text-muted);
+}
+
+select, button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    outline: none;
+}
+
+button.unit-toggle {
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+@media(min-width: 500px) {
+    .forecast-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.forecast-card {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forecast-info h4 {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+}
+
+.forecast-info .weather-desc {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.forecast-temps {
+    text-align: right;
+    font-size: 1rem;
+}
+
+.temp-high {
+    font-weight: 700;
+    color: #e11d48;
+}
+
+.temp-low {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.newsletter {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.newsletter h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.newsletter p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.newsletter input[type="email"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.newsletter button {
+    background: #10b981;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.loader {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}

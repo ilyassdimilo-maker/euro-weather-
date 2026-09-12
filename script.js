@@ -1,26 +1,22 @@
-let currentUnit = 'C'; // 'C' or 'F'
+let currentUnit = 'C'; 
 let cachedForecastData = null;
 
 const citySelect = document.getElementById('citySelect');
 const unitToggleBtn = document.getElementById('unitToggleBtn');
 const weatherOutput = document.getElementById('weatherOutput');
 
-function getWeatherDetails(weatherCode) {
-    const map = {
-        'clear': { name: 'Clear Sky', emoji: '☀️' },
-        'pcloudy': { name: 'Partly Cloudy', emoji: '⛅' },
-        'mcloudy': { name: 'Mostly Cloudy', emoji: '☁️' },
-        'cloudy': { name: 'Overcast', emoji: '☁️' },
-        'humid': { name: 'Humid & Foggy', emoji: '🌫️' },
-        'lightrain': { name: 'Light Rain', emoji: '🌦️' },
-        'oshower': { name: 'Rain Showers', emoji: '🌧️' },
-        'ishower': { name: 'Isolated Showers', emoji: '🌧️' },
-        'rain': { name: 'Rain', emoji: '🌧️' },
-        'snow': { name: 'Snow', emoji: '❄️' },
-        'ts': { name: 'Thunderstorm', emoji: '⚡' },
-        'ignite': { name: 'Thunderstorm Risk', emoji: '⚡' }
-    };
-    return map[weatherCode] || { name: weatherCode, emoji: '🌤️' };
+// Map WMO weather codes from Open-Meteo to readable names & emojis
+function getWeatherDetails(code) {
+    if (code === 0) return { name: 'Clear Sky', emoji: '☀️' };
+    if ([1, 2].includes(code)) return { name: 'Partly Cloudy', emoji: '⛅' };
+    if (code === 3) return { name: 'Overcast', emoji: '☁️' };
+    if ([45, 48].includes(code)) return { name: 'Foggy', emoji: '🌫️' };
+    if ([51, 53, 55, 56, 57].includes(code)) return { name: 'Light Rain', emoji: '🌦️' };
+    if ([61, 63, 66].includes(code)) return { name: 'Rain', emoji: '🌧️' };
+    if ([65, 67, 80, 81, 82].includes(code)) return { name: 'Heavy Showers', emoji: '🌧️' };
+    if ([71, 73, 75, 77].includes(code)) return { name: 'Snow', emoji: '❄️' };
+    if ([95, 96, 99].includes(code)) return { name: 'Thunderstorm', emoji: '⚡' };
+    return { name: 'Fair Weather', emoji: '🌤️' };
 }
 
 function cToF(celsius) {
@@ -28,11 +24,7 @@ function cToF(celsius) {
 }
 
 function formatDate(dateStr) {
-    const str = String(dateStr);
-    const year = str.substring(0, 4);
-    const month = str.substring(4, 6);
-    const day = str.substring(6, 8);
-    const dateObj = new Date(`${year}-${month}-${day}`);
+    const dateObj = new Date(dateStr);
     return dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
 
@@ -41,14 +33,15 @@ async function fetchWeather() {
     const lon = selectedOption.getAttribute('data-lon');
     const lat = selectedOption.getAttribute('data-lat');
 
-    weatherOutput.innerHTML = `<div class="loader">Fetching forecast... ⏳</div>`;
+    weatherOutput.innerHTML = `<div class="loader">Fetching secure forecast... ⏳</div>`;
 
     try {
-        const response = await fetch(`https://www.7timer.info/bin/api.pl?lon=${lon}&lat=${lat}&product=civillight&output=json`);
+        // Open-Meteo secure HTTPS endpoint (works on GitHub Pages)
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
         const data = await response.json();
 
-        if (data && data.dataseries) {
-            cachedForecastData = data.dataseries;
+        if (data && data.daily) {
+            cachedForecastData = data.daily;
             renderWeather();
         } else {
             weatherOutput.innerHTML = `<div class="loader">⚠️ Could not load weather data.</div>`;
@@ -64,12 +57,12 @@ function renderWeather() {
 
     let html = '<div class="forecast-grid">';
     
-    cachedForecastData.forEach(day => {
-        const weatherInfo = getWeatherDetails(day.weather);
-        const dateFormatted = formatDate(day.date);
+    for (let i = 0; i < cachedForecastData.time.length; i++) {
+        const dateFormatted = formatDate(cachedForecastData.time[i]);
+        const weatherInfo = getWeatherDetails(cachedForecastData.weather_code[i]);
         
-        let maxTemp = day.temp2m.max;
-        let minTemp = day.temp2m.min;
+        let maxTemp = cachedForecastData.temperature_2m_max[i];
+        let minTemp = cachedForecastData.temperature_2m_min[i];
         let unitSymbol = '°C';
 
         if (currentUnit === 'F') {
@@ -90,7 +83,7 @@ function renderWeather() {
                 </div>
             </div>
         `;
-    });
+    }
 
     html += '</div>';
     weatherOutput.innerHTML = html;
@@ -102,6 +95,6 @@ unitToggleBtn.addEventListener('click', () => {
     currentUnit = currentUnit === 'C' ? 'F' : 'C';
     unitToggleBtn.textContent = currentUnit === 'C' ? 'Switch to °F 🌡️' : 'Switch to °C 🌡️';
     renderWeather();
-} );
+});
 
 fetchWeather();

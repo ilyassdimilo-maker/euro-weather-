@@ -75,7 +75,8 @@ function renderWeather() {
         }
 
         html += `
-            <div class="forecast-card">
+            <div class="forecast-card" onclick="showHourlyBreakdown(${i})" style="cursor: pointer;">
+
                 <div class="forecast-info">
                     <h4>${dateFormatted}</h4>
                     <div class="weather-desc">${weatherInfo.emoji} ${weatherInfo.name}</div>
@@ -91,6 +92,49 @@ function renderWeather() {
     html += '</div>';
     weatherOutput.innerHTML = html;
 }
+// Show 24-hour breakdown for the selected day index (0 to 6)
+function showHourlyBreakdown(dayIndex) {
+    const hourlyOutput = document.getElementById('hourlyOutput');
+    const hourlyGrid = document.getElementById('hourlyGrid');
+    
+    if (!window.cachedHourlyData) return;
+
+    const startIndex = dayIndex * 24;
+    const endIndex = startIndex + 24;
+
+    let hourlyHtml = '';
+
+    for (let i = startIndex; i < endIndex; i++) {
+        const timeStr = window.cachedHourlyData.time[i];
+        const dateObj = new Date(timeStr);
+        const hourFormatted = dateObj.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: false });
+        
+        const temp = window.cachedHourlyData.temperature_2m[i];
+        const code = window.cachedHourlyData.weather_code[i];
+        const weatherInfo = getWeatherDetails(code);
+
+        let displayTemp = temp;
+        let unitSymbol = '°C';
+        if (currentUnit === 'F') {
+            displayTemp = cToF(displayTemp);
+            unitSymbol = '°F';
+        }
+
+        hourlyHtml += `
+            <div class="hourly-card">
+                <div style="font-size: 0.85rem; font-weight: bold; margin-bottom: 5px;">${hourFormatted}</div>
+                <div style="font-size: 1.5rem; margin-bottom: 5px;">${weatherInfo.emoji}</div>
+                <div style="font-size: 0.9rem;">${displayTemp}${unitSymbol}</div>
+            </div>
+        `;
+    }
+
+    hourlyGrid.innerHTML = hourlyHtml;
+    hourlyOutput.style.display = 'block';
+    hourlyOutput.scrollIntoView({ behavior: 'smooth' });
+}
+
+
 
 citySelect.addEventListener('change', fetchWeather);
 

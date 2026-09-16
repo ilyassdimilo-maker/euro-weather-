@@ -37,15 +37,18 @@ async function fetchWeather() {
 
     try {
         // Open-Meteo secure HTTPS endpoint (works on GitHub Pages)
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
-        const data = await response.json();
+    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&timezone=auto`);
+const data = await response.json();
 
-        if (data && data.daily) {
-            cachedForecastData = data.daily;
-            renderWeather();
-        } else {
-            weatherOutput.innerHTML = `<div class="loader">⚠️ Could not load weather data.</div>`;
-        }
+if (data && data.daily) {
+    cachedForecastData = data.daily;
+    window.cachedHourlyData = data.hourly;
+    renderWeather();
+} else {
+    weatherOutput.innerHTML = `<div class="loader">⚠️ Could not load weather data.</div>`;
+}
+
+
     } catch (error) {
         console.error(error);
         weatherOutput.innerHTML = `<div class="loader">❌ Network error. Check your connection.</div>`;
@@ -97,7 +100,4 @@ unitToggleBtn.addEventListener('click', () => {
     renderWeather();
 });
 
-fetchWeather();
-
-
-const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&hourly=temperature_2m,weather_code&timezone=auto`);
+fetchWeather(); 

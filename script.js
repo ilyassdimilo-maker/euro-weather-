@@ -48,12 +48,12 @@ if (data && data.daily) {
     weatherOutput.innerHTML = `<div class="loader">⚠️ Could not load weather data.</div>`;
 }
 
-{
+
     } catch (error) {
         console.error(error);
         weatherOutput.innerHTML = `<div class="loader">❌ Network error. Check your connection.</div>`;
     }
-}
+
 
 function renderWeather() {
     if (!cachedForecastData) return;

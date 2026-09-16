@@ -28,7 +28,7 @@ function formatDate(dateStr) {
     return dateObj.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
 
-async function fetchWeather() {
+async function fetchWeather() 
     const selectedOption = citySelect.options[citySelect.selectedIndex];
     const lon = selectedOption.getAttribute('data-lon');
     const lat = selectedOption.getAttribute('data-lat');
